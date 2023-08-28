@@ -30,9 +30,9 @@ export default function AppFunctional(props) {
 
 
   const coordTemplate = [
-    [1, 1], [1, 2], [1, 3],
-    [2, 1], [2, 2], [2, 3],
-    [3, 1], [3, 2], [3, 3]
+    [1, 1], [2, 1], [3, 1],
+    [1, 2], [2, 2], [3, 2],
+    [1, 3], [2, 3], [3, 3]
   ];
 
   function getXY(i) {
@@ -90,7 +90,7 @@ export default function AppFunctional(props) {
     const name = evt.target.textContent;
     if (coordTemplate[index1] !== -1) {
       let result = getNextIndex(name, index1);
-      console.log(result)
+      getXY(result)
       setIndex1(result)
     }
   }
