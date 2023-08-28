@@ -56,14 +56,12 @@ export default function AppFunctional(props) {
     // this helper should return the current index unchanged.
     if (index1 >= 0) {
       if (direction === "RIGHT") {
-        let count = 0;
         if (index1 === 2 || index1 === 8 || index1 === 5) {
-          setCount(count + 1)
           setMessage(["You can't go right"])
           return index1;
         } else {
           setMessage([]);
-          setCount(count + 1)
+          setCount(()=>count + 1)
           return index1 + 1;
         }
       } else if (direction === "LEFT") {
@@ -122,7 +120,12 @@ export default function AppFunctional(props) {
     let object =  { "x": coordTemplate[index1][0], "y": coordTemplate[index1][1], "steps": count, "email": email.email };
     axios.post("http://localhost:9000/api/result",object)
     .then((res)=> {
+      console.log(res)
     setMessage([res.data.message])
+    setEmail({email : ""})
+    setCoords("2,2")
+    setCount(0)
+    setIndex1(4)
     }) 
     .catch(err=> {
       setMessage(["Ouch: email must be a valid email"])
