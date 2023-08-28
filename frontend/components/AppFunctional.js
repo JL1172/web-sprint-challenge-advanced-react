@@ -21,7 +21,7 @@ async function fetchData(aMessage) {
 export default function AppFunctional(props) {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
-  const [message, setMessage] = useState(initialMessage);
+  const [error, setError] = useState("");
   const [email, setEmail] = useState(initialEmail);
   const [steps, setSteps] = useState(initialSteps);
   const [index1, setIndex1] = useState(initialIndex);
@@ -87,9 +87,11 @@ export default function AppFunctional(props) {
   function move(evt) {
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
+    let constant = index1;
     const name = evt.target.textContent;
     if (coordTemplate[index1] !== -1) {
       let result = getNextIndex(name, index1);
+      setError("")
       getXY(result)
       setIndex1(result)
     }
@@ -119,7 +121,7 @@ export default function AppFunctional(props) {
         }
       </div>
       <div className="info">
-        <h3 id="message">{message}</h3>
+        <h3 id="message">{error}</h3>
       </div>
       <div id="keypad">
         <button onClick={move} id="left">LEFT</button>
