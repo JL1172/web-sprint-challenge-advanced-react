@@ -25,7 +25,7 @@ export default function AppFunctional(props) {
   const [email, setEmail] = useState(initialEmail);
   const [steps, setSteps] = useState(initialSteps);
   const [index1, setIndex1] = useState(initialIndex);
-  const [array, setArray] = useState([0, 1, 2, 3, 4, 5,6, 7, 8]);
+  const [array, setArray] = useState([0, 1, 2, 3, 4, 5, 6, 7, 8]);
   const [coords, setCoords] = useState("2,2");
 
 
@@ -38,7 +38,7 @@ export default function AppFunctional(props) {
   function getXY(i) {
     // It it not necessary to have a state to track the coordinates.
     // It's enough to know what index the "B" is at, to be able to calculate them.
-    let [x,y] = coordTemplate[index1];
+    let [x, y] = coordTemplate[i];
     setCoords(`${x},${y}`);
   }
 
@@ -49,32 +49,50 @@ export default function AppFunctional(props) {
     setSteps(initialSteps);
   }
 
-  function getNextIndex(direction) {
+  function getNextIndex(direction, i) {
     // This helper takes a direction ("left", "up", etc) and calculates what the next index
     // of the "B" would be. If the move is impossible because we are at the edge of the grid,
     // this helper should return the current index unchanged.
-    if (direction === "RIGHT") {
-      return index1 + 1;
-    }
-    if (direction === "LEFT") {
-      return index1 - 1;
-    }
-    if (direction === "UP") {
-      return index1 - 3;
-    } 
-    if (direction === "DOWN") {
-      return index1 + 3;
+    if (index1 >= 0) {
+      if (direction === "RIGHT") {
+        let count = 0;
+        if (index1 === 2 || index1 === 8 || index1 === 5) {
+          return index1;
+        } else {
+          return index1 + 1;
+        }
+      } else if (direction === "LEFT") {
+        if (index1 === 0 || index1 === 3 || index1 === 6) {
+          return index1;
+        } else {
+          return index1 - 1;
+        }
+      } else if (direction === "UP") {
+        if (index1 === 0 || index1 === 1 || index1 === 2) {
+          return index1;
+        } else {
+          return index1 - 3;
+        }
+      } else if (direction === "DOWN") {
+        if (index1 === 6 || index1 === 7 || index1 === 8) {
+          return index1;
+        } else {
+          return index1 + 3;
+        }
+      }
     }
   }
+
 
   function move(evt) {
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
-    getXY(index1);
     const name = evt.target.textContent;
-    let result = getNextIndex(name);
-    console.log(result)
-    setIndex1(result)
+    if (coordTemplate[index1] !== -1) {
+      let result = getNextIndex(name, index1);
+      console.log(result)
+      setIndex1(result)
+    }
   }
 
   function onChange(evt) {
@@ -93,7 +111,7 @@ export default function AppFunctional(props) {
       </div>
       <div id="grid">
         {
-          [0,1,2,3,4,5,6,7,8].map((idx) => (
+          [0, 1, 2, 3, 4, 5, 6, 7, 8].map((idx) => (
             <div key={idx} className={`square${idx === index1 ? ' active' : ''}`}>
               {idx === index1 ? 'B' : null}
             </div>
