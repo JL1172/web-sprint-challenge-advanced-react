@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios';
 
 // Suggested initial states
 const initialMessage = ''
@@ -21,7 +22,7 @@ export default class AppClass extends React.Component {
   constructor() {
     super();
     this.state = {
-      message : [],
+      message : "",
       email : "",
       count : 0,
       index : 4,
@@ -51,7 +52,7 @@ export default class AppClass extends React.Component {
       if (direction === "RIGHT") {
         let count = 0;
         if (this.state.index === 2 || this.state.index === 8 || this.state.index === 5) {
-          this.setState({...this.state, message : (["You can't go right"])})
+          this.setState({...this.state, message : "You can't go right"})
           return this.state.index;
         } else {
           this.setState({...this.state, count : this.state.count + 1, message : []})
@@ -59,7 +60,7 @@ export default class AppClass extends React.Component {
         }
       } else if (direction === "LEFT") {
         if (this.state.index === 0 || this.state.index === 3 || this.state.index === 6) {
-          this.setState({...this.state, message : (["You can't go left"])})
+          this.setState({...this.state, message : "You can't go left"})
           return this.state.index;
         } else {
           this.setState({...this.state, count : this.state.count + 1, message : []})
@@ -67,7 +68,7 @@ export default class AppClass extends React.Component {
         }
       } else if (direction === "UP") {
         if (this.state.index === 0 || this.state.index === 1 || this.state.index === 2) {
-          this.setState({...this.state, message : (["You can't go up"])})
+          this.setState({...this.state, message : "You can't go up"})
           return this.state.index;
         } else {
           this.setState({...this.state, count : this.state.count + 1, message : []})
@@ -75,10 +76,12 @@ export default class AppClass extends React.Component {
         }
       } else if (direction === "DOWN") {
         if (this.state.index === 6 || this.state.index === 7 || this.state.index === 8) {
-          this.setState({...this.state, message : (["You can't go down"])})
+          let string = "hello there"
+          this.setState({message : "string"})
+          console.log(this.state.message)
           return this.state.index;
         } else {
-          this.setState({...this.state, count : this.state.count + 1, message : []})
+          this.setState({...this.state, count : this.state.count + 1, message : ""})
           return this.state.index + 3;
         }
       }
@@ -137,7 +140,7 @@ export default class AppClass extends React.Component {
           }
         </div>
         <div className="info">
-          <h3 id="message">{this.state.message.length > 0 && this.state.message[0]}</h3>
+          <h3 id="message">{this.state.message}</h3>
         </div>
         <div id="keypad">
           <button onClick={this.move} id="left">LEFT</button>
@@ -146,7 +149,7 @@ export default class AppClass extends React.Component {
           <button onClick={this.move} id="down">DOWN</button>
           <button onClick={this.reset} id="reset">reset</button>
         </div>
-        <form>
+        <form onSubmit={this.onSubmit}>
           <input onChange = {this.onChange} value = {this.state.email} id="email" type="email" placeholder="type email"></input>
           <input  id="submit" type="submit"></input>
         </form>
