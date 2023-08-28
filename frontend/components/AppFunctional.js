@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios';
 // Suggested initial states
 const initialEmail = {
-  email : 'jacob@gmail.com'
+  email : ''
 }
 const initialSteps = 0
 const initialIndex = 4 // the index the "B" is at
@@ -117,13 +117,13 @@ export default function AppFunctional(props) {
   function onSubmit(evt) {
     evt.preventDefault();
     // Use a POST request to send a payload to the server.
-    let object =  { "x": 1, "y": 2, "steps": 3, "email": "lady@gaga.com" };
+    let object =  { "x": coordTemplate[index1][0], "y": coordTemplate[index1][1], "steps": count, "email": email.email };
     axios.post("http://localhost:9000/api/result",object)
     .then((res)=> {
-      console.log(res)
+      setMessage([res.data.message])
     }) 
     .catch(err=> {
-      console.log(err)
+      setMessage(["Ouch, email is required"])
     })
   }
 
