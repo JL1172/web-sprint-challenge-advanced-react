@@ -21,13 +21,16 @@ async function fetchData(aMessage) {
 export default function AppFunctional(props) {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState("Y");
   const [email, setEmail] = useState(initialEmail);
   const [steps, setSteps] = useState(initialSteps);
   const [index1, setIndex1] = useState(initialIndex);
-  const [array, setArray] = useState([0, 1, 2, 3, 4, 5, 6, 7, 8]);
   const [coords, setCoords] = useState("2,2");
-
+  const [count,setCount] = useState(0);
+useEffect(()=>{
+  console.log(count)
+  console.log(message)
+},[count,message])
 
   const coordTemplate = [
     [1, 1], [2, 1], [3, 1],
@@ -57,6 +60,7 @@ export default function AppFunctional(props) {
       if (direction === "RIGHT") {
         let count = 0;
         if (index1 === 2 || index1 === 8 || index1 === 5) {
+          setCount(()=> count + 1)
           return index1;
         } else {
           return index1 + 1;
@@ -83,15 +87,15 @@ export default function AppFunctional(props) {
     }
   }
 
-
   function move(evt) {
+
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
     let constant = index1;
     const name = evt.target.textContent;
     if (coordTemplate[index1] !== -1) {
       let result = getNextIndex(name, index1);
-      setError("")
+      setMessage("")
       getXY(result)
       setIndex1(result)
     }
@@ -121,7 +125,7 @@ export default function AppFunctional(props) {
         }
       </div>
       <div className="info">
-        <h3 id="message">{error}</h3>
+        <h3 id="message">{message.length > 0 && message[0]}</h3>
       </div>
       <div id="keypad">
         <button onClick={move} id="left">LEFT</button>
@@ -138,17 +142,3 @@ export default function AppFunctional(props) {
   )
 }
 
-
-
-
-// if (evt.target.textContent === "LEFT") {
-//   let xy = coordTemplate.at(index1);
-//   let [a,b] = xy;
-//   if (a >= xy[0] &&  b > 0) {
-//     b -= 1;
-//     setIndex1(()=> index1 - 1)
-//     setCoords(`${a},${b}`)
-//     setSteps(()=> steps + 1);
-//   } else {
-//     setMessage("You can't go left")
-//   }
