@@ -115,27 +115,30 @@ export default function AppFunctional(props) {
 
   function onSubmit(evt) {
     evt.preventDefault();
-
+    if (!email.email) {
+      setMessage(["Ouch: email is required"])
+    } else {
+      let object = { "x": coordTemplate[index1][0], "y": coordTemplate[index1][1], "steps": count, "email": email.email };
+      axios.post("http://localhost:9000/api/result", object)
+        .then((res) => {
+          setMessage([res.data.message])
+          if (email.email !== "foo@bar.baz") {
+            setEmail({ email: "" })
+            setIndex1(4)
+          } else {
+            setIndex1(4)
+          }
+        })
+        .catch(err => {
+          if (email.email === "foo@bar.baz") {
+            setMessage([err.response.data.message])
+            setEmail({ email: "" })
+          } else {
+            setMessage(["Ouch: email must be a valid email"])
+          }
+        })
+    }
     // Use a POST request to send a payload to the server.
-    let object = { "x": coordTemplate[index1][0], "y": coordTemplate[index1][1], "steps": count, "email": email.email };
-    axios.post("http://localhost:9000/api/result", object)
-      .then((res) => {
-        setMessage([res.data.message])
-        if (email.email !== "foo@bar.baz") {
-          setEmail({ email: "" })
-          setIndex1(4)
-        } else {
-          setIndex1(4)
-        }
-      })
-      .catch(err => {
-        if (email.email === "foo@bar.baz") {
-          setMessage([err.response.data.message])
-          setEmail({ email: "" })
-        } else {
-          setMessage(["Ouch: email must be a valid email"])
-        }
-      })
   }
 
   return (
