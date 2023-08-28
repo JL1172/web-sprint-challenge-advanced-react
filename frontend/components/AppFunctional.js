@@ -123,7 +123,7 @@ export default function AppFunctional(props) {
       setMessage([res.data.message])
     }) 
     .catch(err=> {
-      setMessage(["Ouch, email is required"])
+      setMessage(["Ouch: email must be a valid email"])
     })
   }
 
