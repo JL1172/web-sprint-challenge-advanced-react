@@ -21,16 +21,16 @@ async function fetchData(aMessage) {
 export default function AppFunctional(props) {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
-  const [message, setMessage] = useState("Y");
+  const [message, setMessage] = useState([]);
   const [email, setEmail] = useState(initialEmail);
   const [steps, setSteps] = useState(initialSteps);
   const [index1, setIndex1] = useState(initialIndex);
   const [coords, setCoords] = useState("2,2");
-  const [count,setCount] = useState(0);
-useEffect(()=>{
-  console.log(count)
-  console.log(message)
-},[count,message])
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    console.log(count)
+    console.log(message)
+  }, [count, message])
 
   const coordTemplate = [
     [1, 1], [2, 1], [3, 1],
@@ -50,6 +50,7 @@ useEffect(()=>{
     setCoords("2,2");
     setIndex1(initialIndex);
     setSteps(initialSteps);
+    setMessage([])
   }
 
   function getNextIndex(direction, i) {
@@ -60,27 +61,35 @@ useEffect(()=>{
       if (direction === "RIGHT") {
         let count = 0;
         if (index1 === 2 || index1 === 8 || index1 === 5) {
-          setCount(()=> count + 1)
+          setCount(() => count + 1)
+          setMessage(["You can't go right"])
           return index1;
         } else {
+          setMessage([]);
           return index1 + 1;
         }
       } else if (direction === "LEFT") {
         if (index1 === 0 || index1 === 3 || index1 === 6) {
+          setMessage(["You can't go left"])
           return index1;
         } else {
+          setMessage([]);
           return index1 - 1;
         }
       } else if (direction === "UP") {
         if (index1 === 0 || index1 === 1 || index1 === 2) {
+          setMessage(["You can't go up"])
           return index1;
         } else {
+          setMessage([]);
           return index1 - 3;
         }
       } else if (direction === "DOWN") {
         if (index1 === 6 || index1 === 7 || index1 === 8) {
+          setMessage(["You can't go down"])
           return index1;
         } else {
+          setMessage([]);
           return index1 + 3;
         }
       }
@@ -95,7 +104,6 @@ useEffect(()=>{
     const name = evt.target.textContent;
     if (coordTemplate[index1] !== -1) {
       let result = getNextIndex(name, index1);
-      setMessage("")
       getXY(result)
       setIndex1(result)
     }
