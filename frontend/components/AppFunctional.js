@@ -117,6 +117,7 @@ export default function AppFunctional(props) {
 
   function onSubmit(evt) {
     evt.preventDefault();
+    
     // Use a POST request to send a payload to the server.
     let object =  { "x": coordTemplate[index1][0], "y": coordTemplate[index1][1], "steps": count, "email": email.email };
     axios.post("http://localhost:9000/api/result",object)
