@@ -27,6 +27,7 @@ export default class AppClass extends React.Component {
       count : 0,
       index : 4,
       coords : "2,2",
+      valid : "",
     }
   }
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
@@ -36,7 +37,8 @@ export default class AppClass extends React.Component {
     // It it not necessary to have a state to track the coordinates.
     // It's enough to know what index the "B" is at, to be able to calculate them.
     let [x, y] = coordTemplate[i];
-    this.setState({...this.state, coords : (`${x},${y}`)});
+    console.log(x)
+    this.setState({...this.state, coords : this.state.coords = `${x},${y}`});
   }
 
   reset = () => {
@@ -52,36 +54,34 @@ export default class AppClass extends React.Component {
       if (direction === "RIGHT") {
         let count = 0;
         if (this.state.index === 2 || this.state.index === 8 || this.state.index === 5) {
-          this.setState({...this.state, message : "You can't go right"})
+          this.setState({ message : this.state.message = "You can't go right"})
           return this.state.index;
         } else {
-          this.setState({...this.state, count : this.state.count + 1, message : []})
+          this.setState({...this.state, count : this.state.count += 1, message : this.state.message = ""})
           return this.state.index + 1;
         }
       } else if (direction === "LEFT") {
         if (this.state.index === 0 || this.state.index === 3 || this.state.index === 6) {
-          this.setState({...this.state, message : "You can't go left"})
+          this.setState({ message : this.state.message =  "You can't go left"})
           return this.state.index;
         } else {
-          this.setState({...this.state, count : this.state.count + 1, message : []})
+          this.setState({...this.state, count : this.state.count += 1, message : this.state.message = ""})
           return this.state.index - 1;
         }
       } else if (direction === "UP") {
         if (this.state.index === 0 || this.state.index === 1 || this.state.index === 2) {
-          this.setState({...this.state, message : "You can't go up"})
+          this.setState({message :  this.state.message = "You can't go up"})
           return this.state.index;
         } else {
-          this.setState({...this.state, count : this.state.count + 1, message : []})
+          this.setState({...this.state, count : this.state.count += 1, message : this.state.message = ""})
           return this.state.index - 3;
         }
       } else if (direction === "DOWN") {
         if (this.state.index === 6 || this.state.index === 7 || this.state.index === 8) {
-          let string = "hello there"
-          this.setState({message : "string"})
-          console.log(this.state.message)
-          return this.state.index;
+           this.setState({ message : this.state.message = "You can't go down"});
+          return this.state.index; 
         } else {
-          this.setState({...this.state, count : this.state.count + 1, message : ""})
+          this.setState({...this.state, count : this.state.count += 1, message : this.state.message = ""})
           return this.state.index + 3;
         }
       }
