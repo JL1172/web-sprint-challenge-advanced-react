@@ -47,7 +47,7 @@ export default function AppFunctional(props) {
     setIndex1(initialIndex);
     setCount(initialSteps)
     setMessage([]);
-    setEmail("");
+    setEmail(initialEmail);
   }
 
   function getNextIndex(direction, i) {
@@ -112,7 +112,7 @@ export default function AppFunctional(props) {
   function onChange(evt) {
     // You will need this to update the value of the input.
     const {value} = evt.target;
-    setEmail(value)
+    setEmail({...email, email : value})
   }
 
   function onSubmit(evt) {
@@ -122,10 +122,6 @@ export default function AppFunctional(props) {
     axios.post("http://localhost:9000/api/result",object)
     .then((res)=> {
     setMessage([res.data.message])
-    setCoords("2,2");
-    setIndex1(initialIndex);
-    setCount(0);
-    setEmail("");
     }) 
     .catch(err=> {
       setMessage(["Ouch: email must be a valid email"])
@@ -158,7 +154,7 @@ export default function AppFunctional(props) {
         <button onClick={reset} id="reset">reset</button>
       </div>
       <form onSubmit={onSubmit}>
-        <input onChange = {onChange} value = {email.email} id="email" type="email" placeholder="type email"></input>
+        <input onChange = {onChange} value = {email.email} id="email" type="email" placeholder="type email" />
         <input id="submit" type="submit"></input>
       </form>
     </div>
