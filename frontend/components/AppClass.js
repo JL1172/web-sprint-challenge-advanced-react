@@ -52,7 +52,6 @@ export default class AppClass extends React.Component {
     // this helper should return the current index unchanged.
     if (this.state.index >= 0) {
       if (direction === "RIGHT") {
-        let count = 0;
         if (this.state.index === 2 || this.state.index === 8 || this.state.index === 5) {
           this.setState({ message: this.state.message = "You can't go right" })
           return this.state.index;
@@ -136,7 +135,7 @@ export default class AppClass extends React.Component {
     return (
       <div id="wrapper" className={className}>
         <div className="info">
-          <h3 id="coordinates">Coordinates ({this.state.coords})</h3>
+          <h3 id="coordinates">Coordinate : ({this.state.coords})</h3>
           <h3 id="steps">You moved {this.state.count} times</h3>
         </div>
         <div id="grid">
