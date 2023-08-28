@@ -47,6 +47,7 @@ export default function AppFunctional(props) {
     setIndex1(initialIndex);
     setCount(initialSteps)
     setMessage([]);
+    setEmail("");
   }
 
   function getNextIndex(direction, i) {
@@ -120,7 +121,11 @@ export default function AppFunctional(props) {
     let object =  { "x": coordTemplate[index1][0], "y": coordTemplate[index1][1], "steps": count, "email": email.email };
     axios.post("http://localhost:9000/api/result",object)
     .then((res)=> {
-      setMessage([res.data.message])
+    setMessage([res.data.message])
+    setCoords("2,2");
+    setIndex1(initialIndex);
+    setCount(0);
+    setEmail("");
     }) 
     .catch(err=> {
       setMessage(["Ouch: email must be a valid email"])
@@ -131,7 +136,7 @@ export default function AppFunctional(props) {
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">Coordinate : ({coords})</h3>
-        <h3 id="steps">You moved {count} times</h3>
+        <h3 id="steps">You moved {count} {count > 1 ? "times" : "time"}</h3>
       </div>
       <div id="grid">
         {

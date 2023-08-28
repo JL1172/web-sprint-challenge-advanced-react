@@ -22,12 +22,12 @@ export default class AppClass extends React.Component {
   constructor() {
     super();
     this.state = {
-      message : "",
-      email : "",
-      count : 0,
-      index : 4,
-      coords : "2,2",
-      valid : "",
+      message: "",
+      email: "",
+      count: 0,
+      index: 4,
+      coords: "2,2",
+      valid: "",
     }
   }
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
@@ -38,12 +38,12 @@ export default class AppClass extends React.Component {
     // It's enough to know what index the "B" is at, to be able to calculate them.
     let [x, y] = coordTemplate[i];
     console.log(x)
-    this.setState({...this.state, coords : this.state.coords = `${x},${y}`});
+    this.setState({ ...this.state, coords: this.state.coords = `${x},${y}` });
   }
 
   reset = () => {
     // Use this helper to reset all states to their initial values.
-    this.setState({...this.state, email : "", coords : "2,2",index : 4, message : [], count : 0})
+    this.setState({ ...this.state, email: "", coords: "2,2", index: 4, message: [], count: 0 })
   }
 
   getNextIndex = (direction) => {
@@ -54,34 +54,34 @@ export default class AppClass extends React.Component {
       if (direction === "RIGHT") {
         let count = 0;
         if (this.state.index === 2 || this.state.index === 8 || this.state.index === 5) {
-          this.setState({ message : this.state.message = "You can't go right"})
+          this.setState({ message: this.state.message = "You can't go right" })
           return this.state.index;
         } else {
-          this.setState({...this.state, count : this.state.count += 1, message : this.state.message = ""})
+          this.setState({ ...this.state, count: this.state.count += 1, message: this.state.message = "" })
           return this.state.index + 1;
         }
       } else if (direction === "LEFT") {
         if (this.state.index === 0 || this.state.index === 3 || this.state.index === 6) {
-          this.setState({ message : this.state.message =  "You can't go left"})
+          this.setState({ message: this.state.message = "You can't go left" })
           return this.state.index;
         } else {
-          this.setState({...this.state, count : this.state.count += 1, message : this.state.message = ""})
+          this.setState({ ...this.state, count: this.state.count += 1, message: this.state.message = "" })
           return this.state.index - 1;
         }
       } else if (direction === "UP") {
         if (this.state.index === 0 || this.state.index === 1 || this.state.index === 2) {
-          this.setState({message :  this.state.message = "You can't go up"})
+          this.setState({ message: this.state.message = "You can't go up" })
           return this.state.index;
         } else {
-          this.setState({...this.state, count : this.state.count += 1, message : this.state.message = ""})
+          this.setState({ ...this.state, count: this.state.count += 1, message: this.state.message = "" })
           return this.state.index - 3;
         }
       } else if (direction === "DOWN") {
         if (this.state.index === 6 || this.state.index === 7 || this.state.index === 8) {
-           this.setState({ message : this.state.message = "You can't go down"});
-          return this.state.index; 
+          this.setState({ message: this.state.message = "You can't go down" });
+          return this.state.index;
         } else {
-          this.setState({...this.state, count : this.state.count += 1, message : this.state.message = ""})
+          this.setState({ ...this.state, count: this.state.count += 1, message: this.state.message = "" })
           return this.state.index + 3;
         }
       }
@@ -96,31 +96,40 @@ export default class AppClass extends React.Component {
     if (coordTemplate[this.state.index] !== -1) {
       let result = this.getNextIndex(name, this.state.index);
       this.getXY(result)
-      this.setState({...this.state, index : (result)})
+      this.setState({ ...this.state, index: (result) })
     }
   }
-  
+
   onChange = (evt) => {
     // You will need this to update the value of the input.
-    const {value} = evt.target;
-    this.setState({...this.state, email : value})
+    const { value } = evt.target;
+    this.setState({ ...this.state, email: value })
   }
 
   onSubmit = (evt) => {
     // Use a POST request to send a payload to the server.
     evt.preventDefault();
-    // Use a POST request to send a payload to the server.
-    let object =
-      { "x": coordTemplate[this.state.index][0], "y": coordTemplate[this.state.index][1],
-       "steps": this.state.count, "email": this.state.email };
-    axios.post("http://localhost:9000/api/result",object)
-    .then((res)=> {
-      this.setState({...this.state, message : ([res.data.message])})
-    }) 
-    .catch(err=> {
-      this.setState({...this.state, message : ("Ouch: email must be a valid email")})
-    })
+    if (!this.state.email) {
+      this.setState({ message: this.state.message = "Ouch: email is required" });
+    } else {
+      let object =
+      {
+        "x": coordTemplate[this.state.index][0], "y": coordTemplate[this.state.index][1],
+        "steps": this.state.count, "email": this.state.email
+      };
+      axios.post("http://localhost:9000/api/result", object)
+        .then((res) => {
+          this.setState({ ...this.state, message: this.state.message = res.data.message })
+        })
+        .catch(err => {
+          this.setState({ ...this.state, message: ("Ouch: email must be a valid email") })
+        })
+        .finally(()=> {
+          this.setState({index : 4, email : "",count : 0, coords : "2,2"})
+        })
+    }
   }
+  // Use a POST request to send a payload to the server.
 
   render() {
     const { className } = this.props
@@ -128,7 +137,7 @@ export default class AppClass extends React.Component {
       <div id="wrapper" className={className}>
         <div className="info">
           <h3 id="coordinates">Coordinates ({this.state.coords})</h3>
-          <h3 id="steps">You moved {this.state.count} times</h3>
+          <h3 id="steps">You moved {this.state.count} {this.state.count > 1 ? "times" : "time"}</h3>
         </div>
         <div id="grid">
           {
@@ -150,8 +159,8 @@ export default class AppClass extends React.Component {
           <button onClick={this.reset} id="reset">reset</button>
         </div>
         <form onSubmit={this.onSubmit}>
-          <input onChange = {this.onChange} value = {this.state.email} id="email" type="email" placeholder="type email"></input>
-          <input  id="submit" type="submit"></input>
+          <input onChange={this.onChange} value={this.state.email} id="email" type="email" placeholder="type email"></input>
+          <input id="submit" type="submit"></input>
         </form>
       </div>
     )
