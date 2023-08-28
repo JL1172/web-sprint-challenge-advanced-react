@@ -2,11 +2,11 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios';
 // Suggested initial states
-const initialMessage = "";
-const initialEmail = 'jacob@gmail.com'
+const initialEmail = {
+  email : 'jacob@gmail.com'
+}
 const initialSteps = 0
 const initialIndex = 4 // the index the "B" is at
-
 
 async function fetchData(aMessage) {
   const res = await axios.post("http://localhost:9000/api/result", aMessage);
@@ -22,15 +22,11 @@ export default function AppFunctional(props) {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
   const [message, setMessage] = useState([]);
-  const [email, setEmail] = useState(initialEmail);
+  const [email, setEmail] = useState(initialEmail)
   const [steps, setSteps] = useState(initialSteps);
   const [index1, setIndex1] = useState(initialIndex);
   const [coords, setCoords] = useState("2,2");
   const [count, setCount] = useState(0);
-  useEffect(() => {
-    console.log(count)
-    console.log(message)
-  }, [count, message])
 
   const coordTemplate = [
     [1, 1], [2, 1], [3, 1],
@@ -49,8 +45,8 @@ export default function AppFunctional(props) {
     // Use this helper to reset all states to their initial values.
     setCoords("2,2");
     setIndex1(initialIndex);
-    setSteps(initialSteps);
-    setMessage([])
+    setCount(initialSteps)
+    setMessage([]);
   }
 
   function getNextIndex(direction, i) {
@@ -61,11 +57,12 @@ export default function AppFunctional(props) {
       if (direction === "RIGHT") {
         let count = 0;
         if (index1 === 2 || index1 === 8 || index1 === 5) {
-          setCount(() => count + 1)
+          setCount(count + 1)
           setMessage(["You can't go right"])
           return index1;
         } else {
           setMessage([]);
+          setCount(count + 1)
           return index1 + 1;
         }
       } else if (direction === "LEFT") {
@@ -74,6 +71,7 @@ export default function AppFunctional(props) {
           return index1;
         } else {
           setMessage([]);
+          setCount(()=> count + 1)
           return index1 - 1;
         }
       } else if (direction === "UP") {
@@ -82,6 +80,7 @@ export default function AppFunctional(props) {
           return index1;
         } else {
           setMessage([]);
+          setCount(()=> count + 1)
           return index1 - 3;
         }
       } else if (direction === "DOWN") {
@@ -90,6 +89,7 @@ export default function AppFunctional(props) {
           return index1;
         } else {
           setMessage([]);
+          setCount(()=> count + 1)
           return index1 + 3;
         }
       }
@@ -100,7 +100,6 @@ export default function AppFunctional(props) {
 
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
-    let constant = index1;
     const name = evt.target.textContent;
     if (coordTemplate[index1] !== -1) {
       let result = getNextIndex(name, index1);
@@ -111,17 +110,28 @@ export default function AppFunctional(props) {
 
   function onChange(evt) {
     // You will need this to update the value of the input.
+    const {value} = evt.target;
+    setEmail(value)
   }
 
   function onSubmit(evt) {
+    evt.preventDefault();
     // Use a POST request to send a payload to the server.
+    let object =  { "x": 1, "y": 2, "steps": 3, "email": "lady@gaga.com" };
+    axios.post("http://localhost:9000/api/result",object)
+    .then((res)=> {
+      console.log(res)
+    }) 
+    .catch(err=> {
+      console.log(err)
+    })
   }
 
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">Coordinate : ({coords})</h3>
-        <h3 id="steps">You moved {steps} times</h3>
+        <h3 id="steps">You moved {count} times</h3>
       </div>
       <div id="grid">
         {
@@ -142,8 +152,8 @@ export default function AppFunctional(props) {
         <button onClick={move} id="down">DOWN</button>
         <button onClick={reset} id="reset">reset</button>
       </div>
-      <form>
-        <input id="email" type="email" placeholder="type email"></input>
+      <form onSubmit={onSubmit}>
+        <input onChange = {onChange} value = {email.email} id="email" type="email" placeholder="type email"></input>
         <input id="submit" type="submit"></input>
       </form>
     </div>
