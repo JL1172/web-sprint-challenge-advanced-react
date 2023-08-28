@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios';
 // Suggested initial states
 const initialEmail = {
-  email : ''
+  email: ''
 }
 const initialSteps = 0
 const initialIndex = 4 // the index the "B" is at
@@ -61,7 +61,7 @@ export default function AppFunctional(props) {
           return index1;
         } else {
           setMessage([]);
-          setCount(()=>count + 1)
+          setCount(() => count + 1)
           return index1 + 1;
         }
       } else if (direction === "LEFT") {
@@ -70,7 +70,7 @@ export default function AppFunctional(props) {
           return index1;
         } else {
           setMessage([]);
-          setCount(()=> count + 1)
+          setCount(() => count + 1)
           return index1 - 1;
         }
       } else if (direction === "UP") {
@@ -79,7 +79,7 @@ export default function AppFunctional(props) {
           return index1;
         } else {
           setMessage([]);
-          setCount(()=> count + 1)
+          setCount(() => count + 1)
           return index1 - 3;
         }
       } else if (direction === "DOWN") {
@@ -88,7 +88,7 @@ export default function AppFunctional(props) {
           return index1;
         } else {
           setMessage([]);
-          setCount(()=> count + 1)
+          setCount(() => count + 1)
           return index1 + 3;
         }
       }
@@ -109,27 +109,33 @@ export default function AppFunctional(props) {
 
   function onChange(evt) {
     // You will need this to update the value of the input.
-    const {value} = evt.target;
-    setEmail({...email, email : value})
+    const { value } = evt.target;
+    setEmail({ ...email, email: value })
   }
 
   function onSubmit(evt) {
     evt.preventDefault();
-    
+
     // Use a POST request to send a payload to the server.
-    let object =  { "x": coordTemplate[index1][0], "y": coordTemplate[index1][1], "steps": count, "email": email.email };
-    axios.post("http://localhost:9000/api/result",object)
-    .then((res)=> {
-      console.log(res)
-    setMessage([res.data.message])
-    setEmail({email : ""})
-    setCoords("2,2")
-    setCount(0)
-    setIndex1(4)
-    }) 
-    .catch(err=> {
-      setMessage(["Ouch: email must be a valid email"])
-    })
+    let object = { "x": coordTemplate[index1][0], "y": coordTemplate[index1][1], "steps": count, "email": email.email };
+    axios.post("http://localhost:9000/api/result", object)
+      .then((res) => {
+        setMessage([res.data.message])
+        if (email.email !== "foo@bar.baz") {
+          setEmail({ email: "" })
+          setIndex1(4)
+        } else {
+          setIndex1(4)
+        }
+      })
+      .catch(err => {
+        if (email.email === "foo@bar.baz") {
+          setMessage([err.response.data.message])
+          setEmail({ email: "" })
+        } else {
+          setMessage(["Ouch: email must be a valid email"])
+        }
+      })
   }
 
   return (
@@ -158,7 +164,7 @@ export default function AppFunctional(props) {
         <button onClick={reset} id="reset">reset</button>
       </div>
       <form onSubmit={onSubmit}>
-        <input onChange = {onChange} value = {email.email} id="email" type="email" placeholder="type email" />
+        <input onChange={onChange} value={email.email} id="email" type="email" placeholder="type email" />
         <input id="submit" type="submit"></input>
       </form>
     </div>
