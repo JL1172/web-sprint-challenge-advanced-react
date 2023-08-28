@@ -71,6 +71,10 @@ export default function AppFunctional(props) {
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
     getXY(index1);
+    const name = evt.target.textContent;
+    let result = getNextIndex(name);
+    console.log(result)
+    setIndex1(result)
   }
 
   function onChange(evt) {
