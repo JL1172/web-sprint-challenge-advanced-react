@@ -334,9 +334,9 @@ test('AppClass is a class-based component, Review how to build a class-based com
       })
       test(`[D2 ${label}] Steps counter handles a single step gracefully`, () => {
         fireEvent.click(up)
-        expect(steps.textContent).toBe("You moved 1 times")//error here was time singular
+        expect(steps.textContent).toBe("You moved 1 time")//error here was time singular
         fireEvent.click(up)
-        expect(steps.textContent).toBe("You moved 1 times")//error here same as above 
+        expect(steps.textContent).toBe("You moved 1 time")//error here same as above 
       })
     })
     describe(`[E ${label}] Reset Button, Review how to set, manipulate, and display pieces of state, and handle user interaction.`, () => {
