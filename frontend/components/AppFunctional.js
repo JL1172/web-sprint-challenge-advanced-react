@@ -145,7 +145,7 @@ export default function AppFunctional(props) {
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">Coordinate : ({coords})</h3>
-        <h3 id="steps">You moved {count} {count > 1 ? "times" : "time"}</h3>
+        <h3 id="steps">You moved {count} times</h3>
       </div>
       <div id="grid">
         {
